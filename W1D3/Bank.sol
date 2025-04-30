@@ -10,7 +10,7 @@ contract Bank{
         owner = msg.sender;
     }
 
-    function withDraw(uint256 amount) public payable{
+    function withDraw(uint256 amount) public{
         require(msg.sender == owner, "Only the owner can withdraw");
         require(amount <= address(this).balance, "Insufficient balance in the contract");
         payable(owner).transfer(amount);
