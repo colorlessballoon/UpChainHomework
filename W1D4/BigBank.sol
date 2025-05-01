@@ -3,27 +3,7 @@ pragma solidity ^0.8.22;
 
 import "./Bank.sol";
 
-contract Admin{
-    address public adminOwner;
-    constructor() {
-        adminOwner = msg.sender;
-    }
-    function bigbankWithDraw(BigBank bigbank,uint256 amount) public {
-        require(msg.sender == adminOwner, "Only the owner can withdraw");
-        bigbank.withDraw(amount);
-    }
-
-}
-
-contract BigBank is Bank{
-
-    Admin public admin;
-    address public adminOwner;
-    constructor(address adminAddress){
-        admin = Admin(adminAddress);
-        owner = adminAddress;
-        adminOwner = admin.adminOwner();
-    }
+contract BigBank is Bank {
 
 
     modifier depositLimit(){
@@ -31,15 +11,17 @@ contract BigBank is Bank{
         _;
     }
 
-    
+    function adminTransfer(address newAdmin) public {
+        require(msg.sender == owner, "Only the owner can transfer admin");
+        owner = newAdmin;
+    }
+
 
     function deposit() public payable depositLimit override {
         super.deposit();
     }
 
-    function withDraw(uint256 amount) public override {
-        require(msg.sender == owner, "Only the owner can withdraw");
-        require(amount <= address(this).balance, "Insufficient balance in the contract");
-        payable(adminOwner).transfer(amount);
+    function withDraw() public override {
+        super.withDraw();
     }
 }

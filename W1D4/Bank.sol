@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.22;
 
-contract Bank{
+import "./IBank.sol";
+
+contract Bank is IBank {
     mapping(address => uint) public balances;
     address[3] public top3;
     address public owner;
@@ -11,10 +13,9 @@ contract Bank{
         owner = msg.sender;
     }
 
-    function withDraw(uint256 amount) public virtual{
+    function withDraw() public virtual{
         require(msg.sender == owner, "(Bank)Only the owner can withdraw");
-        require(amount <= address(this).balance, "Insufficient balance in the contract");
-        payable(owner).transfer(amount);
+        payable(owner).transfer(address(this).balance);
         
     }
     
@@ -24,7 +25,7 @@ contract Bank{
         updateTop3();
     }
 
-    function updateTop3() internal {
+    function updateTop3() public {
         for(uint i = 0; i < top3.length; i++){
             if(msg.sender == top3[i]) break;
             if (balances[msg.sender] > balances[top3[i]]) {
