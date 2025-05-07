@@ -134,4 +134,9 @@ contract NFTMarket{
         return ordersOfId[_tokenId].seller != address(0);
     }
 
+    function tokensReceived() external pure {
+        revert();
+    }
+    
+
 }
