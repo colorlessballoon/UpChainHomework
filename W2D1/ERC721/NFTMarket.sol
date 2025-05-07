@@ -50,7 +50,7 @@ contract NFTMarket{
         nft = IERC721(_nft);
     }
 
-    function buy(uint256 _tokenId) external{
+    function buyNFT(uint256 _tokenId) public{
         address seller = ordersOfId[_tokenId].seller;
         address buyer = msg.sender;
         uint256 price = ordersOfId[_tokenId].price;
@@ -77,6 +77,21 @@ contract NFTMarket{
         Order storage order = orders[ordersOfIndex[_tokenId]];
         order.price = _price;
         emit PriceChanged(seller, _tokenId, oldPrice, _price);
+    }
+
+    function list(address operator, address from, uint256 tokenId, bytes calldata data) external returns (bytes4) {
+        uint256 price = toUint256(data, 0);
+        require(price > 0, "Price must be greater than zero");
+        require(operator == from, "Seller must be the operator");
+        orders.push(Order({
+            seller: from,
+            tokenId: tokenId,
+            price: price
+        }));
+        ordersOfId[tokenId] = orders[orders.length - 1];
+        ordersOfIndex[tokenId] = orders.length - 1;
+        emit NewOrder(from, tokenId, price);
+        return this.list.selector;
     }
 
     function onERC721Received(
@@ -134,8 +149,18 @@ contract NFTMarket{
         return ordersOfId[_tokenId].seller != address(0);
     }
 
-    function tokensReceived() external pure {
-        revert();
+    function tokensReceived(address _buyer, uint256 amount, bytes memory data) external returns (bool) {
+        (uint256 _tokenId) = abi.decode(data, (uint256));
+        require(amount >= ordersOfId[_tokenId].price, "Insufficient amount");
+        address seller = ordersOfId[_tokenId].seller;
+        address buyer = _buyer;
+        uint256 price = ordersOfId[_tokenId].price;
+
+        require(token.transferFrom(buyer, seller, price), "Transfer failed");
+        nft.safeTransferFrom(address(0), buyer, _tokenId);
+        removeOrder(_tokenId);
+        emit Deal(buyer, seller, _tokenId, price);
+        return true;
     }
     
 
