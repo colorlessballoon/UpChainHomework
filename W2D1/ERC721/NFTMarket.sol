@@ -56,7 +56,7 @@ contract NFTMarket{
         uint256 price = ordersOfId[_tokenId].price;
 
         require(token.transferFrom(buyer, seller, price), "Transfer failed");
-        nft.safeTransferFrom(address(0), buyer, _tokenId);
+        nft.safeTransferFrom(address(this), buyer, _tokenId);
         removeOrder(_tokenId);
         emit Deal(buyer, seller, _tokenId, price);
     }
@@ -64,7 +64,7 @@ contract NFTMarket{
     function cancelOrder(uint256 _tokenId) external{
         address seller = ordersOfId[_tokenId].seller;
         require(msg.sender == seller, "Only seller can cancel order");
-        nft.safeTransferFrom(address(0), seller, _tokenId);
+        nft.safeTransferFrom(address(this), seller, _tokenId);
         removeOrder(_tokenId);
         emit OrderCanceled(seller, _tokenId);
     }
@@ -88,6 +88,7 @@ contract NFTMarket{
             tokenId: tokenId,
             price: price
         }));
+        nft.safeTransferFrom(from, address(this), tokenId);
         ordersOfId[tokenId] = orders[orders.length - 1];
         ordersOfIndex[tokenId] = orders.length - 1;
         emit NewOrder(from, tokenId, price);
@@ -158,7 +159,7 @@ contract NFTMarket{
         uint256 price = ordersOfId[_tokenId].price;
 
         require(token.transferFrom(buyer, seller, price), "Transfer failed");
-        nft.safeTransferFrom(address(0), buyer, _tokenId);
+        nft.safeTransferFrom(address(this), buyer, _tokenId);
         removeOrder(_tokenId);
         emit Deal(buyer, seller, _tokenId, price);
         return true;
