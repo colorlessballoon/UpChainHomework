@@ -150,6 +150,7 @@ contract NFTMarket{
     }
 
     function tokensReceived(address _buyer, uint256 amount, bytes memory data) external returns (bool) {
+        require(msg.sender == address(token), "Only token contract can call this function");
         (uint256 _tokenId) = abi.decode(data, (uint256));
         require(amount >= ordersOfId[_tokenId].price, "Insufficient amount");
         address seller = ordersOfId[_tokenId].seller;
