@@ -1,0 +1,11 @@
+No files changed, compilation skipped
+
+Ran 5 tests for test/Bank.t.sol:BankTest
+[PASS] testDepositUpdatesBalance() (gas: 98314)
+[PASS] testOnlyOwnerCanWithdraw() (gas: 88092)
+[PASS] testReceiveFunction() (gas: 74376)
+[PASS] testTop3Users() (gas: 265044)
+[PASS] testTop3UsersEmpty() (gas: 20824)
+Suite result: ok. 5 passed; 0 failed; 0 skipped; finished in 6.80ms (7.39ms CPU time)
+
+Ran 1 test suite in 182.41ms (6.80ms CPU time): 5 tests passed, 0 failed, 0 skipped (5 total tests)

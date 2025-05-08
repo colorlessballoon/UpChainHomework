@@ -1,0 +1,11 @@
+Compiling 1 files with Solc 0.8.29
+Solc 0.8.29 finished in 789.12ms
+Compiler run successful!
+
+Ran 3 tests for test/NFTMarket.t.sol:NFTMarketTest
+[PASS] testBuyNFT() (gas: 468969)
+[PASS] testFuzzBuyNFT(uint256) (runs: 257, μ: 235670, ~: 235670)
+[PASS] testListNFT() (gas: 437535)
+Suite result: ok. 3 passed; 0 failed; 0 skipped; finished in 47.52ms (43.41ms CPU time)
+
+Ran 1 test suite in 160.13ms (47.52ms CPU time): 3 tests passed, 0 failed, 0 skipped (3 total tests)
