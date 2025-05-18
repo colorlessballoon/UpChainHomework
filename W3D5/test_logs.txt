@@ -1,0 +1,13 @@
+No files changed, compilation skipped
+
+Ran 7 tests for test/MemeFactoryTest.sol:MemeFactoryTest
+[PASS] testCannotMintBeyondTotalSupply() (gas: 491044)
+[PASS] testDeployInscription() (gas: 266008)
+[PASS] testFeeDistribution() (gas: 419880)
+[PASS] testFreeMinting() (gas: 318393)
+[PASS] testIncorrectPaymentAmount() (gas: 266478)
+[PASS] testMintAmount() (gas: 419008)
+[PASS] testMultipleMintingUntilCap() (gas: 586745)
+Suite result: ok. 7 passed; 0 failed; 0 skipped; finished in 14.18ms (13.42ms CPU time)
+
+Ran 1 test suite in 197.17ms (14.18ms CPU time): 7 tests passed, 0 failed, 0 skipped (7 total tests)
