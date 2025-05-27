@@ -1,0 +1,24 @@
+No files changed, compilation skipped
+
+Ran 6 tests for test/Vesting.t.sol:VestingTest
+[PASS] testCliffPeriod() (gas: 39696)
+[PASS] testCompleteVesting() (gas: 97747)
+[PASS] testFirstRelease() (gas: 103958)
+[PASS] testInitialState() (gas: 20133)
+[PASS] testMidVesting() (gas: 104162)
+[PASS] testMultipleReleases() (gas: 122136)
+Suite result: ok. 6 passed; 0 failed; 0 skipped; finished in 10.39ms (15.00ms CPU time)
+
+Ran 9 tests for test/MemeFactory.t.sol:MemeFactoryTest
+[PASS] test_CreateMemeToken() (gas: 289738)
+[PASS] test_Deployment() (gas: 23695)
+[PASS] test_MintInscription() (gas: 478505)
+[PASS] test_RevertWhen_CreateMemeTokenWithInsufficientFee() (gas: 21381)
+[PASS] test_RevertWhen_CreateMemeTokenWithInvalidParameters() (gas: 21875)
+[PASS] test_RevertWhen_MintInscriptionExceedingTotalSupply() (gas: 491699)
+[PASS] test_RevertWhen_MintInscriptionWithInsufficientPayment() (gas: 285655)
+[PASS] test_RevertWhen_WithdrawFeesByNonOwner() (gas: 11564)
+[PASS] test_WithdrawFees() (gas: 488131)
+Suite result: ok. 9 passed; 0 failed; 0 skipped; finished in 11.36ms (2.65ms CPU time)
+
+Ran 2 test suites in 169.00ms (21.75ms CPU time): 15 tests passed, 0 failed, 0 skipped (15 total tests)
