@@ -1,0 +1,19 @@
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+solc = "0.8.20"
+remappings = [
+    "@uniswap/v2-core/=src/uniswapv2/core/",
+    "@uniswap/v2-periphery/=src/uniswapv2/periphery/",
+    "v2-core/=src/uniswapv2/core/contracts/",
+    "v2-periphery/=src/uniswapv2/periphery/contracts/"
+]
+
+# See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
+
+[profile.default.model_checker]
+contracts = {
+    'src/uniswapv2/core/contracts/' = ["0.5.16"],
+    'src/uniswapv2/periphery/contracts/' = ["0.6.6"]
+}
