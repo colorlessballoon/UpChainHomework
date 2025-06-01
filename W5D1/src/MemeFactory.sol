@@ -239,30 +239,37 @@ contract MemeFactory {
         uint256 currentSupplyCap = memeToken.totalSupplyCap();
         require(currentTotalMinted + amountToMint <= currentSupplyCap, "MemeFactory: Minting would exceed total supply cap"); // 检查是否会超出总供应量上限
 
-        // 调用 MemeToken 代理合约的 mint 函数为 msg.sender 铸造代币
+        // 计算费用分配
+        uint256 projectShare = (currentPrice * projectFeePercent) / basisPoints; // 计算项目方份额 (5%)
+        uint256 liquidityShare = currentPrice - projectShare;                    // 计算流动性份额 (95%)
+
+        // 铸造代币给用户
         memeToken.mint(msg.sender, amountToMint);
 
-        // 如果价格大于0，则分配费用
-        if (currentPrice > 0) {
-            uint256 projectShare = (currentPrice * projectFeePercent) / basisPoints; // 计算项目方份额 (1%)
-            uint256 issuerShare = currentPrice - projectShare;                      // 计算 Meme 发行者份额 (剩余部分)
+        // 将代币转移到工厂合约用于添加流动性
+        TransferHelper.safeTransferFrom(tokenAddr, msg.sender, address(this), amountToMint);
+        
+        // 批准 Uniswap Router 使用代币
+        TransferHelper.safeApprove(tokenAddr, address(uniswapRouter), amountToMint);
 
-            // 发送项目方费用份额 (如果大于0)
-            if (projectShare > 0) {
-                (bool successProject, ) = payable(projectOwner).call{value: projectShare}("");
-                require(successProject, "MemeFactory: Failed to send fee to project owner"); // 检查 ETH 转账是否成功
-            }
-            // 发送 Meme 发行者费用份额 (如果大于0)
-            // 即使 projectShare 因取整为0，发行者也应获得其份额
-            if (issuerShare > 0) {
-                (bool successIssuer, ) = payable(memeIssuer).call{value: issuerShare}("");
-                require(successIssuer, "MemeFactory: Failed to send fee to meme issuer"); // 检查 ETH 转账是否成功
-            }
-            emit FeeDistributed(tokenAddr, msg.sender, currentPrice, projectShare, issuerShare); // 触发费用分配事件
-        } else {
-            // 如果价格为0 (免费铸造)，也触发事件，但份额为0
-            emit FeeDistributed(tokenAddr, msg.sender, 0, 0, 0);
+        // 添加流动性
+        uniswapRouter.addLiquidityETH{value: liquidityShare}(
+            tokenAddr,
+            amountToMint,
+            amountToMint, // 最小token数量
+            liquidityShare, // 最小ETH数量
+            msg.sender, // LP代币给用户
+            block.timestamp + 15 minutes
+        );
+
+        // 发送项目方费用
+        if (projectShare > 0) {
+            (bool successProject, ) = payable(projectOwner).call{value: projectShare}("");
+            require(successProject, "MemeFactory: Failed to send fee to project owner");
         }
+
+        emit FeeDistributed(tokenAddr, msg.sender, currentPrice, projectShare, liquidityShare);
+        emit LiquidityAdded(tokenAddr, liquidityShare, amountToMint);
     }
 
     // 新增：用户主动添加流动性
@@ -334,7 +341,10 @@ contract MemeFactory {
 
     function withdrawFees() external {
         require(msg.sender == projectOwner, "MemeFactory: Only project owner can withdraw fees");
-        (bool success, ) = projectOwner.call{value: address(this).balance}("");
+        // 只提取部署费用，铸造费用已经在铸造时直接发送给项目方
+        uint256 deploymentFees = address(this).balance;
+        require(deploymentFees > 0, "MemeFactory: No fees to withdraw");
+        (bool success, ) = projectOwner.call{value: deploymentFees}("");
         require(success, "MemeFactory: Fee withdrawal failed");
     }
 

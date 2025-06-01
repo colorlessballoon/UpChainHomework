@@ -139,21 +139,18 @@ contract MemeFactoryTest is Test {
         
         // 铸造代币
         vm.startPrank(user);
+        // 先批准工厂合约使用代币
+        token.approve(address(factory), perMintAmount);
         factory.mintInscription{value: pricePerMint}(tokenAddress);
         vm.stopPrank();
 
         // 验证铸造结果
-        assertEq(token.balanceOf(user), perMintAmount);
+        assertEq(token.balanceOf(user), 0); // 用户余额应该为0，因为代币被用于添加流动性
         assertEq(token.totalMinted(), perMintAmount);
 
-        // 添加流动性
-        vm.startPrank(user);
-        token.approve(address(factory), perMintAmount);
-        factory.addLiquidity{value: 0.01 ether}(tokenAddress, 0.01 ether, perMintAmount);
-        vm.stopPrank();
-
-        // 验证添加流动性后的余额
-        assertEq(token.balanceOf(user), 0);
+        // 验证项目方收到的费用
+        uint256 expectedProjectFee = (pricePerMint * 5) / 100; // 5% 的项目方费用
+        assertEq(projectFeeRecipient.balance, expectedProjectFee);
     }
 
     function test_RevertWhen_MintInscriptionWithInsufficientPayment() public {
@@ -197,18 +194,13 @@ contract MemeFactoryTest is Test {
         
         // 第一次铸造
         vm.startPrank(user);
+        token.approve(address(factory), perMintAmount);
         factory.mintInscription{value: pricePerMint}(tokenAddress);
         vm.stopPrank();
 
         // 验证第一次铸造结果
-        assertEq(token.balanceOf(user), perMintAmount);
+        assertEq(token.balanceOf(user), 0); // 用户余额应该为0，因为代币被用于添加流动性
         assertEq(token.totalMinted(), perMintAmount);
-
-        // 添加流动性
-        vm.startPrank(user);
-        token.approve(address(factory), perMintAmount);
-        factory.addLiquidity{value: 0.01 ether}(tokenAddress, 0.01 ether, perMintAmount);
-        vm.stopPrank();
 
         // 尝试第二次铸造，应该失败
         vm.startPrank(user);
@@ -236,27 +228,28 @@ contract MemeFactoryTest is Test {
         
         // 铸造代币
         vm.startPrank(user);
+        token.approve(address(factory), perMintAmount);
         factory.mintInscription{value: pricePerMint}(tokenAddress);
         vm.stopPrank();
 
         // 验证铸造结果
-        assertEq(token.balanceOf(user), perMintAmount);
+        assertEq(token.balanceOf(user), 0); // 用户余额应该为0，因为代币被用于添加流动性
         assertEq(token.totalMinted(), perMintAmount);
 
-        // 添加流动性
-        vm.startPrank(user);
-        token.approve(address(factory), perMintAmount);
-        factory.addLiquidity{value: 0.01 ether}(tokenAddress, 0.01 ether, perMintAmount);
-        vm.stopPrank();
+        // 验证项目方收到的铸造费用
+        uint256 expectedMintFee = (pricePerMint * 5) / 100; // 5% 的项目方费用
+        assertEq(projectFeeRecipient.balance, expectedMintFee);
 
-        // 提取费用，必须由 projectFeeRecipient 调用
+        // 提取部署费用，必须由 projectFeeRecipient 调用
         uint256 balanceBefore = projectFeeRecipient.balance;
         vm.startPrank(projectFeeRecipient);
         factory.withdrawFees();
         vm.stopPrank();
         uint256 balanceAfter = projectFeeRecipient.balance;
 
-        assertEq(balanceAfter - balanceBefore, 0.1 ether);
+        // 验证提取的部署费用
+        uint256 expectedDeploymentFee = 0.1 ether; // 部署费用
+        assertEq(balanceAfter - balanceBefore, expectedDeploymentFee);
     }
 
     function test_RevertWhen_WithdrawFeesByNonOwner() public {
