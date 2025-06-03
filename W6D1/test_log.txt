@@ -1,0 +1,544 @@
+No files changed, compilation skipped
+
+Ran 7 tests for test/Gov.t.sol:GovBankTest
+[PASS] testCannotExecuteDuringVoting() (gas: 174800)
+Traces:
+  [3145131] GovBankTest::setUp()
+    ├─ [993835] → new GovToken@0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f
+    │   ├─ emit OwnershipTransferred(previousOwner: 0x0000000000000000000000000000000000000000, newOwner: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], value: 1000000000000000000000000 [1e24])
+    │   └─ ← [Return] 4380 bytes of code
+    ├─ [398356] → new Bank@0x2e234DAe75C793f67A35089C9d99245E1C58470b
+    │   ├─ emit OwnershipTransferred(previousOwner: 0x0000000000000000000000000000000000000000, newOwner: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   └─ ← [Return] 1870 bytes of code
+    ├─ [1477317] → new Gov@0xF62849F9A0B5Bf2913b396098F7c7019b51A820a
+    │   ├─ emit OwnershipTransferred(previousOwner: 0x0000000000000000000000000000000000000000, newOwner: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   ├─ emit OwnershipTransferred(previousOwner: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], newOwner: Gov: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a])
+    │   └─ ← [Return] 6802 bytes of code
+    ├─ [2816] Bank::transferOwnership(Gov: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a])
+    │   ├─ emit OwnershipTransferred(previousOwner: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], newOwner: Gov: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a])
+    │   └─ ← [Stop]
+    ├─ [25763] GovToken::mint(ECRecover: [0x0000000000000000000000000000000000000001], 1000000000000000000000 [1e21])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: ECRecover: [0x0000000000000000000000000000000000000001], value: 1000000000000000000000 [1e21])
+    │   └─ ← [Stop]
+    ├─ [25763] GovToken::mint(SHA-256: [0x0000000000000000000000000000000000000002], 500000000000000000000 [5e20])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: SHA-256: [0x0000000000000000000000000000000000000002], value: 500000000000000000000 [5e20])
+    │   └─ ← [Stop]
+    ├─ [25763] GovToken::mint(RIPEMD-160: [0x0000000000000000000000000000000000000003], 200000000000000000000 [2e20])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: RIPEMD-160: [0x0000000000000000000000000000000000000003], value: 200000000000000000000 [2e20])
+    │   └─ ← [Stop]
+    ├─ [0] VM::deal(GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], 10000000000000000000 [1e19])
+    │   └─ ← [Return]
+    ├─ [22363] Bank::receive{value: 10000000000000000000}()
+    │   └─ ← [Stop]
+    └─ ← [Stop]
+
+  [174800] GovBankTest::testCannotExecuteDuringVoting()
+    ├─ [0] VM::startPrank(ECRecover: [0x0000000000000000000000000000000000000001])
+    │   └─ ← [Return]
+    ├─ [157151] Gov::propose("Send 1 ETH to team", 1000000000000000000 [1e18], Identity: [0x0000000000000000000000000000000000000004])
+    │   ├─ [2851] GovToken::balanceOf(ECRecover: [0x0000000000000000000000000000000000000001]) [staticcall]
+    │   │   └─ ← [Return] 1000000000000000000000 [1e21]
+    │   ├─  storage changes:
+    │   │   @ 3: 0 → 1
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f85f: 0 → 61
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f85c: 0 → 0x53656e6420312045544820746f207465616d0000000000000000000000000024
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f860: 0 → 604861
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f85d: 0 → 0x0000000000000000000000000000000000000000000000000de0b6b3a7640000
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f85e: 0 → 4
+    │   └─ ← [Stop]
+    ├─ [0] VM::stopPrank()
+    │   └─ ← [Return]
+    ├─ [492] Gov::votingDelay() [staticcall]
+    │   └─ ← [Return] 60
+    ├─ [0] VM::warp(61)
+    │   └─ ← [Return]
+    ├─ [0] VM::expectRevert(custom error 0xf28dceb3:  Voting not ended)
+    │   └─ ← [Return]
+    ├─ [1098] Gov::execute(0)
+    │   └─ ← [Revert] Voting not ended
+    └─ ← [Stop]
+
+[PASS] testCannotExecuteTwice() (gas: 324924)
+Traces:
+  [3145131] GovBankTest::setUp()
+    ├─ [993835] → new GovToken@0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f
+    │   ├─ emit OwnershipTransferred(previousOwner: 0x0000000000000000000000000000000000000000, newOwner: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], value: 1000000000000000000000000 [1e24])
+    │   └─ ← [Return] 4380 bytes of code
+    ├─ [398356] → new Bank@0x2e234DAe75C793f67A35089C9d99245E1C58470b
+    │   ├─ emit OwnershipTransferred(previousOwner: 0x0000000000000000000000000000000000000000, newOwner: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   └─ ← [Return] 1870 bytes of code
+    ├─ [1477317] → new Gov@0xF62849F9A0B5Bf2913b396098F7c7019b51A820a
+    │   ├─ emit OwnershipTransferred(previousOwner: 0x0000000000000000000000000000000000000000, newOwner: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   ├─ emit OwnershipTransferred(previousOwner: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], newOwner: Gov: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a])
+    │   └─ ← [Return] 6802 bytes of code
+    ├─ [2816] Bank::transferOwnership(Gov: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a])
+    │   ├─ emit OwnershipTransferred(previousOwner: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], newOwner: Gov: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a])
+    │   └─ ← [Stop]
+    ├─ [25763] GovToken::mint(ECRecover: [0x0000000000000000000000000000000000000001], 1000000000000000000000 [1e21])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: ECRecover: [0x0000000000000000000000000000000000000001], value: 1000000000000000000000 [1e21])
+    │   └─ ← [Stop]
+    ├─ [25763] GovToken::mint(SHA-256: [0x0000000000000000000000000000000000000002], 500000000000000000000 [5e20])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: SHA-256: [0x0000000000000000000000000000000000000002], value: 500000000000000000000 [5e20])
+    │   └─ ← [Stop]
+    ├─ [25763] GovToken::mint(RIPEMD-160: [0x0000000000000000000000000000000000000003], 200000000000000000000 [2e20])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: RIPEMD-160: [0x0000000000000000000000000000000000000003], value: 200000000000000000000 [2e20])
+    │   └─ ← [Stop]
+    ├─ [0] VM::deal(GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], 10000000000000000000 [1e19])
+    │   └─ ← [Return]
+    ├─ [22363] Bank::receive{value: 10000000000000000000}()
+    │   └─ ← [Stop]
+    └─ ← [Stop]
+
+  [324924] GovBankTest::testCannotExecuteTwice()
+    ├─ [0] VM::startPrank(ECRecover: [0x0000000000000000000000000000000000000001])
+    │   └─ ← [Return]
+    ├─ [157151] Gov::propose("Send 1 ETH to team", 1000000000000000000 [1e18], Identity: [0x0000000000000000000000000000000000000004])
+    │   ├─ [2851] GovToken::balanceOf(ECRecover: [0x0000000000000000000000000000000000000001]) [staticcall]
+    │   │   └─ ← [Return] 1000000000000000000000 [1e21]
+    │   ├─  storage changes:
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f85f: 0 → 61
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f85d: 0 → 0x0000000000000000000000000000000000000000000000000de0b6b3a7640000
+    │   │   @ 3: 0 → 1
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f85c: 0 → 0x53656e6420312045544820746f207465616d0000000000000000000000000024
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f860: 0 → 604861
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f85e: 0 → 4
+    │   └─ ← [Stop]
+    ├─ [0] VM::stopPrank()
+    │   └─ ← [Return]
+    ├─ [492] Gov::votingDelay() [staticcall]
+    │   └─ ← [Return] 60
+    ├─ [0] VM::warp(62)
+    │   └─ ← [Return]
+    ├─ [0] VM::prank(ECRecover: [0x0000000000000000000000000000000000000001])
+    │   └─ ← [Return]
+    ├─ [45906] Gov::vote(0, true)
+    │   ├─ [851] GovToken::balanceOf(ECRecover: [0x0000000000000000000000000000000000000001]) [staticcall]
+    │   │   └─ ← [Return] 1000000000000000000000 [1e21]
+    │   ├─  storage changes:
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f861: 0 → 0x00000000000000000000000000000000000000000000003635c9adc5dea00000
+    │   │   @ 0x560c5c35d362ebe12852e61b5bb1957021175ee6b552ac19e7c3fb4e272bed3f: 0 → 1
+    │   └─ ← [Stop]
+    ├─ [0] VM::prank(SHA-256: [0x0000000000000000000000000000000000000002])
+    │   └─ ← [Return]
+    ├─ [28006] Gov::vote(0, true)
+    │   ├─ [2851] GovToken::balanceOf(SHA-256: [0x0000000000000000000000000000000000000002]) [staticcall]
+    │   │   └─ ← [Return] 500000000000000000000 [5e20]
+    │   ├─  storage changes:
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f861: 0x00000000000000000000000000000000000000000000003635c9adc5dea00000 → 0x00000000000000000000000000000000000000000000005150ae84a8cdf00000
+    │   │   @ 0xf2dfd1aed85f0715c432d0e56b8d7d53fa1dec4c25ed607e31f579ced79688cc: 0 → 1
+    │   └─ ← [Stop]
+    ├─ [448] Gov::votingPeriod() [staticcall]
+    │   └─ ← [Return] 604800 [6.048e5]
+    ├─ [492] Gov::votingDelay() [staticcall]
+    │   └─ ← [Return] 60
+    ├─ [0] VM::warp(604862 [6.048e5])
+    │   └─ ← [Return]
+    ├─ [66921] Gov::execute(0)
+    │   ├─ [40014] Bank::withdraw(1000000000000000000 [1e18], Identity: [0x0000000000000000000000000000000000000004])
+    │   │   ├─ [15] PRECOMPILES::identity{value: 1000000000000000000}(0x)
+    │   │   │   └─ ← [Return]
+    │   │   ├─  storage changes:
+    │   │   │   @ 1: 0x0000000000000000000000000000000000000000000000008ac7230489e80000 → 0x0000000000000000000000000000000000000000000000007ce66c50e2840000
+    │   │   └─ ← [Stop]
+    │   ├─  storage changes:
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f863: 0 → 1
+    │   └─ ← [Stop]
+    ├─ [0] VM::expectRevert(custom error 0xf28dceb3:  Already executed)
+    │   └─ ← [Return]
+    ├─ [1259] Gov::execute(0)
+    │   └─ ← [Revert] Already executed
+    ├─  storage changes:
+    │   @ 0xf2dfd1aed85f0715c432d0e56b8d7d53fa1dec4c25ed607e31f579ced79688cc: 0 → 1
+    └─ ← [Stop]
+
+[PASS] testCannotProposeWithoutTokens() (gas: 21362)
+Traces:
+  [3145131] GovBankTest::setUp()
+    ├─ [993835] → new GovToken@0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f
+    │   ├─ emit OwnershipTransferred(previousOwner: 0x0000000000000000000000000000000000000000, newOwner: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], value: 1000000000000000000000000 [1e24])
+    │   └─ ← [Return] 4380 bytes of code
+    ├─ [398356] → new Bank@0x2e234DAe75C793f67A35089C9d99245E1C58470b
+    │   ├─ emit OwnershipTransferred(previousOwner: 0x0000000000000000000000000000000000000000, newOwner: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   └─ ← [Return] 1870 bytes of code
+    ├─ [1477317] → new Gov@0xF62849F9A0B5Bf2913b396098F7c7019b51A820a
+    │   ├─ emit OwnershipTransferred(previousOwner: 0x0000000000000000000000000000000000000000, newOwner: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   ├─ emit OwnershipTransferred(previousOwner: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], newOwner: Gov: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a])
+    │   └─ ← [Return] 6802 bytes of code
+    ├─ [2816] Bank::transferOwnership(Gov: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a])
+    │   ├─ emit OwnershipTransferred(previousOwner: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], newOwner: Gov: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a])
+    │   └─ ← [Stop]
+    ├─ [25763] GovToken::mint(ECRecover: [0x0000000000000000000000000000000000000001], 1000000000000000000000 [1e21])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: ECRecover: [0x0000000000000000000000000000000000000001], value: 1000000000000000000000 [1e21])
+    │   └─ ← [Stop]
+    ├─ [25763] GovToken::mint(SHA-256: [0x0000000000000000000000000000000000000002], 500000000000000000000 [5e20])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: SHA-256: [0x0000000000000000000000000000000000000002], value: 500000000000000000000 [5e20])
+    │   └─ ← [Stop]
+    ├─ [25763] GovToken::mint(RIPEMD-160: [0x0000000000000000000000000000000000000003], 200000000000000000000 [2e20])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: RIPEMD-160: [0x0000000000000000000000000000000000000003], value: 200000000000000000000 [2e20])
+    │   └─ ← [Stop]
+    ├─ [0] VM::deal(GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], 10000000000000000000 [1e19])
+    │   └─ ← [Return]
+    ├─ [22363] Bank::receive{value: 10000000000000000000}()
+    │   └─ ← [Stop]
+    └─ ← [Stop]
+
+  [21362] GovBankTest::testCannotProposeWithoutTokens()
+    ├─ [0] VM::expectRevert(custom error 0xf28dceb3:  ust hold tokens to propose)
+    │   └─ ← [Return]
+    ├─ [0] VM::prank(ModExp: [0x0000000000000000000000000000000000000005])
+    │   └─ ← [Return]
+    ├─ [9829] Gov::propose("Invalid proposal", 1000000000000000000 [1e18], Identity: [0x0000000000000000000000000000000000000004])
+    │   ├─ [2851] GovToken::balanceOf(ModExp: [0x0000000000000000000000000000000000000005]) [staticcall]
+    │   │   └─ ← [Return] 0
+    │   └─ ← [Revert] Must hold tokens to propose
+    └─ ← [Stop]
+
+[PASS] testCannotVoteTwice() (gas: 223641)
+Traces:
+  [3145131] GovBankTest::setUp()
+    ├─ [993835] → new GovToken@0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f
+    │   ├─ emit OwnershipTransferred(previousOwner: 0x0000000000000000000000000000000000000000, newOwner: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], value: 1000000000000000000000000 [1e24])
+    │   └─ ← [Return] 4380 bytes of code
+    ├─ [398356] → new Bank@0x2e234DAe75C793f67A35089C9d99245E1C58470b
+    │   ├─ emit OwnershipTransferred(previousOwner: 0x0000000000000000000000000000000000000000, newOwner: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   └─ ← [Return] 1870 bytes of code
+    ├─ [1477317] → new Gov@0xF62849F9A0B5Bf2913b396098F7c7019b51A820a
+    │   ├─ emit OwnershipTransferred(previousOwner: 0x0000000000000000000000000000000000000000, newOwner: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   ├─ emit OwnershipTransferred(previousOwner: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], newOwner: Gov: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a])
+    │   └─ ← [Return] 6802 bytes of code
+    ├─ [2816] Bank::transferOwnership(Gov: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a])
+    │   ├─ emit OwnershipTransferred(previousOwner: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], newOwner: Gov: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a])
+    │   └─ ← [Stop]
+    ├─ [25763] GovToken::mint(ECRecover: [0x0000000000000000000000000000000000000001], 1000000000000000000000 [1e21])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: ECRecover: [0x0000000000000000000000000000000000000001], value: 1000000000000000000000 [1e21])
+    │   └─ ← [Stop]
+    ├─ [25763] GovToken::mint(SHA-256: [0x0000000000000000000000000000000000000002], 500000000000000000000 [5e20])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: SHA-256: [0x0000000000000000000000000000000000000002], value: 500000000000000000000 [5e20])
+    │   └─ ← [Stop]
+    ├─ [25763] GovToken::mint(RIPEMD-160: [0x0000000000000000000000000000000000000003], 200000000000000000000 [2e20])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: RIPEMD-160: [0x0000000000000000000000000000000000000003], value: 200000000000000000000 [2e20])
+    │   └─ ← [Stop]
+    ├─ [0] VM::deal(GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], 10000000000000000000 [1e19])
+    │   └─ ← [Return]
+    ├─ [22363] Bank::receive{value: 10000000000000000000}()
+    │   └─ ← [Stop]
+    └─ ← [Stop]
+
+  [223641] GovBankTest::testCannotVoteTwice()
+    ├─ [0] VM::startPrank(ECRecover: [0x0000000000000000000000000000000000000001])
+    │   └─ ← [Return]
+    ├─ [157151] Gov::propose("Send 1 ETH to team", 1000000000000000000 [1e18], Identity: [0x0000000000000000000000000000000000000004])
+    │   ├─ [2851] GovToken::balanceOf(ECRecover: [0x0000000000000000000000000000000000000001]) [staticcall]
+    │   │   └─ ← [Return] 1000000000000000000000 [1e21]
+    │   ├─  storage changes:
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f85f: 0 → 61
+    │   │   @ 3: 0 → 1
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f85e: 0 → 4
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f85c: 0 → 0x53656e6420312045544820746f207465616d0000000000000000000000000024
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f85d: 0 → 0x0000000000000000000000000000000000000000000000000de0b6b3a7640000
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f860: 0 → 604861
+    │   └─ ← [Stop]
+    ├─ [0] VM::stopPrank()
+    │   └─ ← [Return]
+    ├─ [492] Gov::votingDelay() [staticcall]
+    │   └─ ← [Return] 60
+    ├─ [0] VM::warp(61)
+    │   └─ ← [Return]
+    ├─ [0] VM::prank(ECRecover: [0x0000000000000000000000000000000000000001])
+    │   └─ ← [Return]
+    ├─ [45906] Gov::vote(0, true)
+    │   ├─ [851] GovToken::balanceOf(ECRecover: [0x0000000000000000000000000000000000000001]) [staticcall]
+    │   │   └─ ← [Return] 1000000000000000000000 [1e21]
+    │   ├─  storage changes:
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f861: 0 → 0x00000000000000000000000000000000000000000000003635c9adc5dea00000
+    │   │   @ 0x560c5c35d362ebe12852e61b5bb1957021175ee6b552ac19e7c3fb4e272bed3f: 0 → 1
+    │   └─ ← [Stop]
+    ├─ [0] VM::expectRevert(custom error 0xf28dceb3:  Already voted)
+    │   └─ ← [Return]
+    ├─ [0] VM::prank(ECRecover: [0x0000000000000000000000000000000000000001])
+    │   └─ ← [Return]
+    ├─ [1757] Gov::vote(0, true)
+    │   └─ ← [Revert] Already voted
+    ├─  storage changes:
+    │   @ 0x560c5c35d362ebe12852e61b5bb1957021175ee6b552ac19e7c3fb4e272bed3f: 0 → 1
+    └─ ← [Stop]
+
+[PASS] testCreateProposal() (gas: 179342)
+Traces:
+  [3145131] GovBankTest::setUp()
+    ├─ [993835] → new GovToken@0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f
+    │   ├─ emit OwnershipTransferred(previousOwner: 0x0000000000000000000000000000000000000000, newOwner: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], value: 1000000000000000000000000 [1e24])
+    │   └─ ← [Return] 4380 bytes of code
+    ├─ [398356] → new Bank@0x2e234DAe75C793f67A35089C9d99245E1C58470b
+    │   ├─ emit OwnershipTransferred(previousOwner: 0x0000000000000000000000000000000000000000, newOwner: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   └─ ← [Return] 1870 bytes of code
+    ├─ [1477317] → new Gov@0xF62849F9A0B5Bf2913b396098F7c7019b51A820a
+    │   ├─ emit OwnershipTransferred(previousOwner: 0x0000000000000000000000000000000000000000, newOwner: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   ├─ emit OwnershipTransferred(previousOwner: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], newOwner: Gov: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a])
+    │   └─ ← [Return] 6802 bytes of code
+    ├─ [2816] Bank::transferOwnership(Gov: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a])
+    │   ├─ emit OwnershipTransferred(previousOwner: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], newOwner: Gov: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a])
+    │   └─ ← [Stop]
+    ├─ [25763] GovToken::mint(ECRecover: [0x0000000000000000000000000000000000000001], 1000000000000000000000 [1e21])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: ECRecover: [0x0000000000000000000000000000000000000001], value: 1000000000000000000000 [1e21])
+    │   └─ ← [Stop]
+    ├─ [25763] GovToken::mint(SHA-256: [0x0000000000000000000000000000000000000002], 500000000000000000000 [5e20])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: SHA-256: [0x0000000000000000000000000000000000000002], value: 500000000000000000000 [5e20])
+    │   └─ ← [Stop]
+    ├─ [25763] GovToken::mint(RIPEMD-160: [0x0000000000000000000000000000000000000003], 200000000000000000000 [2e20])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: RIPEMD-160: [0x0000000000000000000000000000000000000003], value: 200000000000000000000 [2e20])
+    │   └─ ← [Stop]
+    ├─ [0] VM::deal(GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], 10000000000000000000 [1e19])
+    │   └─ ← [Return]
+    ├─ [22363] Bank::receive{value: 10000000000000000000}()
+    │   └─ ← [Stop]
+    └─ ← [Stop]
+
+  [179342] GovBankTest::testCreateProposal()
+    ├─ [0] VM::startPrank(ECRecover: [0x0000000000000000000000000000000000000001])
+    │   └─ ← [Return]
+    ├─ [157151] Gov::propose("Send 1 ETH to team", 1000000000000000000 [1e18], Identity: [0x0000000000000000000000000000000000000004])
+    │   ├─ [2851] GovToken::balanceOf(ECRecover: [0x0000000000000000000000000000000000000001]) [staticcall]
+    │   │   └─ ← [Return] 1000000000000000000000 [1e21]
+    │   ├─  storage changes:
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f85e: 0 → 4
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f85f: 0 → 61
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f860: 0 → 604861
+    │   │   @ 3: 0 → 1
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f85c: 0 → 0x53656e6420312045544820746f207465616d0000000000000000000000000024
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f85d: 0 → 0x0000000000000000000000000000000000000000000000000de0b6b3a7640000
+    │   └─ ← [Stop]
+    ├─ [3604] Gov::proposals(0) [staticcall]
+    │   └─ ← [Return] 0, "Send 1 ETH to team", 1000000000000000000 [1e18], Identity: [0x0000000000000000000000000000000000000004], 61, 604861 [6.048e5], 0, 0, false
+    ├─ [0] VM::assertEq(0, 0) [staticcall]
+    │   └─ ← [Return]
+    ├─ [0] VM::assertEq(1000000000000000000 [1e18], 1000000000000000000 [1e18]) [staticcall]
+    │   └─ ← [Return]
+    ├─ [0] VM::assertEq(Identity: [0x0000000000000000000000000000000000000004], Identity: [0x0000000000000000000000000000000000000004]) [staticcall]
+    │   └─ ← [Return]
+    ├─ [0] VM::stopPrank()
+    │   └─ ← [Return]
+    └─ ← [Stop]
+
+[PASS] testRejectedProposal() (gas: 304294)
+Traces:
+  [3145131] GovBankTest::setUp()
+    ├─ [993835] → new GovToken@0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f
+    │   ├─ emit OwnershipTransferred(previousOwner: 0x0000000000000000000000000000000000000000, newOwner: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], value: 1000000000000000000000000 [1e24])
+    │   └─ ← [Return] 4380 bytes of code
+    ├─ [398356] → new Bank@0x2e234DAe75C793f67A35089C9d99245E1C58470b
+    │   ├─ emit OwnershipTransferred(previousOwner: 0x0000000000000000000000000000000000000000, newOwner: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   └─ ← [Return] 1870 bytes of code
+    ├─ [1477317] → new Gov@0xF62849F9A0B5Bf2913b396098F7c7019b51A820a
+    │   ├─ emit OwnershipTransferred(previousOwner: 0x0000000000000000000000000000000000000000, newOwner: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   ├─ emit OwnershipTransferred(previousOwner: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], newOwner: Gov: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a])
+    │   └─ ← [Return] 6802 bytes of code
+    ├─ [2816] Bank::transferOwnership(Gov: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a])
+    │   ├─ emit OwnershipTransferred(previousOwner: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], newOwner: Gov: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a])
+    │   └─ ← [Stop]
+    ├─ [25763] GovToken::mint(ECRecover: [0x0000000000000000000000000000000000000001], 1000000000000000000000 [1e21])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: ECRecover: [0x0000000000000000000000000000000000000001], value: 1000000000000000000000 [1e21])
+    │   └─ ← [Stop]
+    ├─ [25763] GovToken::mint(SHA-256: [0x0000000000000000000000000000000000000002], 500000000000000000000 [5e20])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: SHA-256: [0x0000000000000000000000000000000000000002], value: 500000000000000000000 [5e20])
+    │   └─ ← [Stop]
+    ├─ [25763] GovToken::mint(RIPEMD-160: [0x0000000000000000000000000000000000000003], 200000000000000000000 [2e20])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: RIPEMD-160: [0x0000000000000000000000000000000000000003], value: 200000000000000000000 [2e20])
+    │   └─ ← [Stop]
+    ├─ [0] VM::deal(GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], 10000000000000000000 [1e19])
+    │   └─ ← [Return]
+    ├─ [22363] Bank::receive{value: 10000000000000000000}()
+    │   └─ ← [Stop]
+    └─ ← [Stop]
+
+  [304294] GovBankTest::testRejectedProposal()
+    ├─ [0] VM::startPrank(ECRecover: [0x0000000000000000000000000000000000000001])
+    │   └─ ← [Return]
+    ├─ [157151] Gov::propose("Send 1 ETH to team", 1000000000000000000 [1e18], Identity: [0x0000000000000000000000000000000000000004])
+    │   ├─ [2851] GovToken::balanceOf(ECRecover: [0x0000000000000000000000000000000000000001]) [staticcall]
+    │   │   └─ ← [Return] 1000000000000000000000 [1e21]
+    │   ├─  storage changes:
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f85f: 0 → 61
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f860: 0 → 604861
+    │   │   @ 3: 0 → 1
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f85c: 0 → 0x53656e6420312045544820746f207465616d0000000000000000000000000024
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f85e: 0 → 4
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f85d: 0 → 0x0000000000000000000000000000000000000000000000000de0b6b3a7640000
+    │   └─ ← [Stop]
+    ├─ [0] VM::stopPrank()
+    │   └─ ← [Return]
+    ├─ [492] Gov::votingDelay() [staticcall]
+    │   └─ ← [Return] 60
+    ├─ [0] VM::warp(62)
+    │   └─ ← [Return]
+    ├─ [0] VM::prank(ECRecover: [0x0000000000000000000000000000000000000001])
+    │   └─ ← [Return]
+    ├─ [45906] Gov::vote(0, false)
+    │   ├─ [851] GovToken::balanceOf(ECRecover: [0x0000000000000000000000000000000000000001]) [staticcall]
+    │   │   └─ ← [Return] 1000000000000000000000 [1e21]
+    │   ├─  storage changes:
+    │   │   @ 0x560c5c35d362ebe12852e61b5bb1957021175ee6b552ac19e7c3fb4e272bed3f: 0 → 2
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f862: 0 → 0x00000000000000000000000000000000000000000000003635c9adc5dea00000
+    │   └─ ← [Stop]
+    ├─ [0] VM::prank(SHA-256: [0x0000000000000000000000000000000000000002])
+    │   └─ ← [Return]
+    ├─ [28006] Gov::vote(0, false)
+    │   ├─ [2851] GovToken::balanceOf(SHA-256: [0x0000000000000000000000000000000000000002]) [staticcall]
+    │   │   └─ ← [Return] 500000000000000000000 [5e20]
+    │   ├─  storage changes:
+    │   │   @ 0xf2dfd1aed85f0715c432d0e56b8d7d53fa1dec4c25ed607e31f579ced79688cc: 0 → 2
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f862: 0x00000000000000000000000000000000000000000000003635c9adc5dea00000 → 0x00000000000000000000000000000000000000000000005150ae84a8cdf00000
+    │   └─ ← [Stop]
+    ├─ [0] VM::prank(RIPEMD-160: [0x0000000000000000000000000000000000000003])
+    │   └─ ← [Return]
+    ├─ [28006] Gov::vote(0, false)
+    │   ├─ [2851] GovToken::balanceOf(RIPEMD-160: [0x0000000000000000000000000000000000000003]) [staticcall]
+    │   │   └─ ← [Return] 200000000000000000000 [2e20]
+    │   ├─  storage changes:
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f862: 0x00000000000000000000000000000000000000000000005150ae84a8cdf00000 → 0x00000000000000000000000000000000000000000000005c283d410394100000
+    │   │   @ 0xee69c65cdda9eb329ced9262963bb8486a7a0b875d65ea6fea5d6082f29d26d8: 0 → 2
+    │   └─ ← [Stop]
+    ├─ [3604] Gov::proposals(0) [staticcall]
+    │   └─ ← [Return] 0, "Send 1 ETH to team", 1000000000000000000 [1e18], Identity: [0x0000000000000000000000000000000000000004], 61, 604861 [6.048e5], 0, 1700000000000000000000 [1.7e21], false
+    ├─ [0] VM::assertEq(0, 0) [staticcall]
+    │   └─ ← [Return]
+    ├─ [0] VM::assertEq(1700000000000000000000 [1.7e21], 1700000000000000000000 [1.7e21]) [staticcall]
+    │   └─ ← [Return]
+    ├─ [448] Gov::votingPeriod() [staticcall]
+    │   └─ ← [Return] 604800 [6.048e5]
+    ├─ [492] Gov::votingDelay() [staticcall]
+    │   └─ ← [Return] 60
+    ├─ [0] VM::warp(604862 [6.048e5])
+    │   └─ ← [Return]
+    ├─ [0] VM::expectRevert(custom error 0xf28dceb3:  Proposal rejected)
+    │   └─ ← [Return]
+    ├─ [1494] Gov::execute(0)
+    │   └─ ← [Revert] Proposal rejected
+    ├─ [0] VM::assertEq(10000000000000000000 [1e19], 10000000000000000000 [1e19]) [staticcall]
+    │   └─ ← [Return]
+    ├─  storage changes:
+    │   @ 0xee69c65cdda9eb329ced9262963bb8486a7a0b875d65ea6fea5d6082f29d26d8: 0 → 2
+    └─ ← [Stop]
+
+[PASS] testVoteAndExecuteProposal() (gas: 394588)
+Traces:
+  [3145131] GovBankTest::setUp()
+    ├─ [993835] → new GovToken@0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f
+    │   ├─ emit OwnershipTransferred(previousOwner: 0x0000000000000000000000000000000000000000, newOwner: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], value: 1000000000000000000000000 [1e24])
+    │   └─ ← [Return] 4380 bytes of code
+    ├─ [398356] → new Bank@0x2e234DAe75C793f67A35089C9d99245E1C58470b
+    │   ├─ emit OwnershipTransferred(previousOwner: 0x0000000000000000000000000000000000000000, newOwner: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   └─ ← [Return] 1870 bytes of code
+    ├─ [1477317] → new Gov@0xF62849F9A0B5Bf2913b396098F7c7019b51A820a
+    │   ├─ emit OwnershipTransferred(previousOwner: 0x0000000000000000000000000000000000000000, newOwner: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   ├─ emit OwnershipTransferred(previousOwner: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], newOwner: Gov: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a])
+    │   └─ ← [Return] 6802 bytes of code
+    ├─ [2816] Bank::transferOwnership(Gov: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a])
+    │   ├─ emit OwnershipTransferred(previousOwner: GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], newOwner: Gov: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a])
+    │   └─ ← [Stop]
+    ├─ [25763] GovToken::mint(ECRecover: [0x0000000000000000000000000000000000000001], 1000000000000000000000 [1e21])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: ECRecover: [0x0000000000000000000000000000000000000001], value: 1000000000000000000000 [1e21])
+    │   └─ ← [Stop]
+    ├─ [25763] GovToken::mint(SHA-256: [0x0000000000000000000000000000000000000002], 500000000000000000000 [5e20])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: SHA-256: [0x0000000000000000000000000000000000000002], value: 500000000000000000000 [5e20])
+    │   └─ ← [Stop]
+    ├─ [25763] GovToken::mint(RIPEMD-160: [0x0000000000000000000000000000000000000003], 200000000000000000000 [2e20])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: RIPEMD-160: [0x0000000000000000000000000000000000000003], value: 200000000000000000000 [2e20])
+    │   └─ ← [Stop]
+    ├─ [0] VM::deal(GovBankTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], 10000000000000000000 [1e19])
+    │   └─ ← [Return]
+    ├─ [22363] Bank::receive{value: 10000000000000000000}()
+    │   └─ ← [Stop]
+    └─ ← [Stop]
+
+  [394588] GovBankTest::testVoteAndExecuteProposal()
+    ├─ [0] VM::startPrank(ECRecover: [0x0000000000000000000000000000000000000001])
+    │   └─ ← [Return]
+    ├─ [157151] Gov::propose("Send 1 ETH to team", 1000000000000000000 [1e18], Identity: [0x0000000000000000000000000000000000000004])
+    │   ├─ [2851] GovToken::balanceOf(ECRecover: [0x0000000000000000000000000000000000000001]) [staticcall]
+    │   │   └─ ← [Return] 1000000000000000000000 [1e21]
+    │   ├─  storage changes:
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f85d: 0 → 0x0000000000000000000000000000000000000000000000000de0b6b3a7640000
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f85f: 0 → 61
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f860: 0 → 604861
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f85c: 0 → 0x53656e6420312045544820746f207465616d0000000000000000000000000024
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f85e: 0 → 4
+    │   │   @ 3: 0 → 1
+    │   └─ ← [Stop]
+    ├─ [0] VM::stopPrank()
+    │   └─ ← [Return]
+    ├─ [492] Gov::votingDelay() [staticcall]
+    │   └─ ← [Return] 60
+    ├─ [0] VM::warp(62)
+    │   └─ ← [Return]
+    ├─ [0] VM::prank(ECRecover: [0x0000000000000000000000000000000000000001])
+    │   └─ ← [Return]
+    ├─ [45906] Gov::vote(0, true)
+    │   ├─ [851] GovToken::balanceOf(ECRecover: [0x0000000000000000000000000000000000000001]) [staticcall]
+    │   │   └─ ← [Return] 1000000000000000000000 [1e21]
+    │   ├─  storage changes:
+    │   │   @ 0x560c5c35d362ebe12852e61b5bb1957021175ee6b552ac19e7c3fb4e272bed3f: 0 → 1
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f861: 0 → 0x00000000000000000000000000000000000000000000003635c9adc5dea00000
+    │   └─ ← [Stop]
+    ├─ [0] VM::prank(SHA-256: [0x0000000000000000000000000000000000000002])
+    │   └─ ← [Return]
+    ├─ [47906] Gov::vote(0, false)
+    │   ├─ [2851] GovToken::balanceOf(SHA-256: [0x0000000000000000000000000000000000000002]) [staticcall]
+    │   │   └─ ← [Return] 500000000000000000000 [5e20]
+    │   ├─  storage changes:
+    │   │   @ 0xf2dfd1aed85f0715c432d0e56b8d7d53fa1dec4c25ed607e31f579ced79688cc: 0 → 2
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f862: 0 → 0x00000000000000000000000000000000000000000000001b1ae4d6e2ef500000
+    │   └─ ← [Stop]
+    ├─ [0] VM::prank(RIPEMD-160: [0x0000000000000000000000000000000000000003])
+    │   └─ ← [Return]
+    ├─ [28006] Gov::vote(0, true)
+    │   ├─ [2851] GovToken::balanceOf(RIPEMD-160: [0x0000000000000000000000000000000000000003]) [staticcall]
+    │   │   └─ ← [Return] 200000000000000000000 [2e20]
+    │   ├─  storage changes:
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f861: 0x00000000000000000000000000000000000000000000003635c9adc5dea00000 → 0x0000000000000000000000000000000000000000000000410d586a20a4c00000
+    │   │   @ 0xee69c65cdda9eb329ced9262963bb8486a7a0b875d65ea6fea5d6082f29d26d8: 0 → 1
+    │   └─ ← [Stop]
+    ├─ [3604] Gov::proposals(0) [staticcall]
+    │   └─ ← [Return] 0, "Send 1 ETH to team", 1000000000000000000 [1e18], Identity: [0x0000000000000000000000000000000000000004], 61, 604861 [6.048e5], 1200000000000000000000 [1.2e21], 500000000000000000000 [5e20], false
+    ├─ [0] VM::assertEq(1200000000000000000000 [1.2e21], 1200000000000000000000 [1.2e21]) [staticcall]
+    │   └─ ← [Return]
+    ├─ [0] VM::assertEq(500000000000000000000 [5e20], 500000000000000000000 [5e20]) [staticcall]
+    │   └─ ← [Return]
+    ├─ [448] Gov::votingPeriod() [staticcall]
+    │   └─ ← [Return] 604800 [6.048e5]
+    ├─ [492] Gov::votingDelay() [staticcall]
+    │   └─ ← [Return] 60
+    ├─ [0] VM::warp(604862 [6.048e5])
+    │   └─ ← [Return]
+    ├─ [66921] Gov::execute(0)
+    │   ├─ [40014] Bank::withdraw(1000000000000000000 [1e18], Identity: [0x0000000000000000000000000000000000000004])
+    │   │   ├─ [15] PRECOMPILES::identity{value: 1000000000000000000}(0x)
+    │   │   │   └─ ← [Return]
+    │   │   ├─  storage changes:
+    │   │   │   @ 1: 0x0000000000000000000000000000000000000000000000008ac7230489e80000 → 0x0000000000000000000000000000000000000000000000007ce66c50e2840000
+    │   │   └─ ← [Stop]
+    │   ├─  storage changes:
+    │   │   @ 0xc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f863: 0 → 1
+    │   └─ ← [Stop]
+    ├─ [0] VM::assertEq(9000000000000000000 [9e18], 9000000000000000000 [9e18]) [staticcall]
+    │   └─ ← [Return]
+    ├─ [0] VM::assertEq(1000000000000000000 [1e18], 1000000000000000000 [1e18]) [staticcall]
+    │   └─ ← [Return]
+    ├─ [3604] Gov::proposals(0) [staticcall]
+    │   └─ ← [Return] 0, "Send 1 ETH to team", 1000000000000000000 [1e18], Identity: [0x0000000000000000000000000000000000000004], 61, 604861 [6.048e5], 1200000000000000000000 [1.2e21], 500000000000000000000 [5e20], true
+    ├─ [0] VM::assertTrue(true) [staticcall]
+    │   └─ ← [Return]
+    ├─  storage changes:
+    │   @ 0xee69c65cdda9eb329ced9262963bb8486a7a0b875d65ea6fea5d6082f29d26d8: 0 → 1
+    └─ ← [Stop]
+
+Suite result: ok. 7 passed; 0 failed; 0 skipped; finished in 12.60ms (23.05ms CPU time)
+
+Ran 1 test suite in 208.61ms (12.60ms CPU time): 7 tests passed, 0 failed, 0 skipped (7 total tests)
