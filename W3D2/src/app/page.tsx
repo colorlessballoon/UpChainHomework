@@ -27,10 +27,14 @@ function AppkitDemoContent() {
     const chains = useChains();
     const currentChain = chains.find(chain => chain.id === chainId);
 
-    // 表单状态
+    // 上架表单状态
     const [tokenId, setTokenId] = useState<string>('');
     const [price, setPrice] = useState<string>('');
     const [formError, setFormError] = useState<string>('');
+
+    // 购买表单状态
+    const [buyTokenId, setBuyTokenId] = useState<string>('');
+    const [buyFormError, setBuyFormError] = useState<string>('');
 
     // 获取当前账户的余额信息
     const { data: balance } = useBalance({
@@ -75,6 +79,34 @@ function AppkitDemoContent() {
         });
     };
 
+    // 处理 NFT 购买
+    const handleBuyNFT = () => {
+        // 表单验证
+        if (!buyTokenId) {
+            setBuyFormError('请输入要购买的 NFT Token ID');
+            return;
+        }
+
+        const tokenIdNum = parseInt(buyTokenId);
+        if (isNaN(tokenIdNum) || tokenIdNum < 0) {
+            setBuyFormError('Token ID 必须是有效的数字');
+            return;
+        }
+
+        // 清除之前的错误
+        setBuyFormError('');
+
+        writeContract({
+            address: NFT_MARKET_ADDRESS as `0x${string}`,
+            abi: NFTMarket_ABI,
+            functionName: 'buy',
+            args: [
+                NFT_CONTRACT_ADDRESS,
+                tokenIdNum
+            ],
+        });
+    };
+
     // 监听交易成功
     useEffect(() => {
         if (isSuccess) {
@@ -82,6 +114,8 @@ function AppkitDemoContent() {
             setTokenId('');
             setPrice('');
             setFormError('');
+            setBuyTokenId('');
+            setBuyFormError('');
         }
     }, [isSuccess]);
 
@@ -101,7 +135,7 @@ function AppkitDemoContent() {
                     </button>
                 ) : (
                     // 已连接钱包时显示详细信息
-                    <div className="space-y-4">
+                    <div className="space-y-8">
                         {/* 显示钱包地址 */}
                         <div className="text-center">
                             <p className="text-gray-600">钱包地址:</p>
@@ -128,8 +162,10 @@ function AppkitDemoContent() {
                                 {balance?.formatted || '0'} {balance?.symbol}
                             </p>
                         </div>
+
                         {/* NFT 上架表单 */}
-                        <div className="text-center space-y-4">
+                        <div className="text-center space-y-4 border-t pt-4">
+                            <h2 className="text-xl font-semibold">上架 NFT</h2>
                             <div>
                                 <label className="block text-gray-600 mb-2">Token ID:</label>
                                 <input
@@ -167,20 +203,55 @@ function AppkitDemoContent() {
                             >
                                 {isPending ? '处理中...' : '上架 NFT'}
                             </button>
+                        </div>
+
+                        {/* NFT 购买表单 */}
+                        <div className="text-center space-y-4 border-t pt-4">
+                            <h2 className="text-xl font-semibold">购买 NFT</h2>
+                            <div>
+                                <label className="block text-gray-600 mb-2">Token ID:</label>
+                                <input
+                                    type="number"
+                                    value={buyTokenId}
+                                    onChange={(e) => setBuyTokenId(e.target.value)}
+                                    className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    placeholder="输入要购买的 NFT Token ID"
+                                    disabled={isPending}
+                                />
+                            </div>
+                            {buyFormError && (
+                                <p className="text-red-500">{buyFormError}</p>
+                            )}
+                            <button
+                                onClick={handleBuyNFT}
+                                disabled={isPending}
+                                className={`w-full py-2 px-4 rounded transition-colors ${
+                                    isPending
+                                        ? 'bg-gray-400 cursor-not-allowed'
+                                        : 'bg-blue-500 hover:bg-blue-600 text-white'
+                                }`}
+                            >
+                                {isPending ? '处理中...' : '购买 NFT'}
+                            </button>
+                        </div>
+
+                        {/* 交易状态显示 */}
+                        <div className="text-center border-t pt-4">
                             {isPending && (
-                                <p className="mt-2 text-gray-600">交易正在处理中...</p>
+                                <p className="text-gray-600">交易正在处理中...</p>
                             )}
                             {isError && (
-                                <p className="mt-2 text-red-500">
+                                <p className="text-red-500">
                                     错误: {error?.message}
                                 </p>
                             )}
                             {isSuccess && (
-                                <p className="mt-2 text-green-500">
-                                    NFT 上架成功！
+                                <p className="text-green-500">
+                                    交易成功！
                                 </p>
                             )}
                         </div>
+
                         {/* 断开连接按钮 */}
                         <button
                             onClick={() => disconnect()}
